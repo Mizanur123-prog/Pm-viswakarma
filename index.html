@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment & Voucher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            margin: auto;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        input {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .voucher {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background: #e7f7e7;
+            border: 1px solid #c3e6c3;
+            color: #155724;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Make Payment</h1>
+        <form id="paymentForm">
+            <input type="text" id="pmId" placeholder="Enter PM ID" required>
+            <input type="text" id="name" placeholder="Enter Your Name" required>
+            <input type="tel" id="mobile" placeholder="Enter Mobile Number" pattern="[0-9]{10}" required>
+            <button type="button" onclick="makePayment()">Pay Now ₹497</button>
+        </form>
+        <div class="voucher" id="voucherSection">
+            <h3>Payment Successful!</h3>
+            <p>Your voucher code is: <strong id="voucherCode"></strong></p>
+        </div>
+    </div>
+
+    <script>
+        function makePayment() {
+            const pmId = document.getElementById("pmId").value;
+            const name = document.getElementById("name").value;
+            const mobile = document.getElementById("mobile").value;
+
+            if (!pmId || !name || !mobile) {
+                alert("Please fill in all the details correctly.");
+                return;
+            }
+
+            // Generate UPI payment link
+            const upiLink = `upi://pay?pa=9085608792@ybl&pn=${encodeURIComponent(name)}&mc=0&tid=${encodeURIComponent(pmId)}&tr=${encodeURIComponent(mobile)}&am=497&cu=INR`;
+
+            // Redirect to UPI app
+            window.location.href = upiLink;
+
+            // Simulate voucher generation after payment
+            setTimeout(() => {
+                document.getElementById("paymentForm").style.display = "none";
+                const voucherCode = `VOUCHER-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+                document.getElementById("voucherCode").innerText = voucherCode;
+                document.getElementById("voucherSection").style.display = "block";
+            }, 5000); // Simulates delay for payment confirmation
+        }
+    </script>
+</body>
+</html>
